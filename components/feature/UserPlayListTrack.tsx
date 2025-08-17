@@ -41,8 +41,9 @@ function UserPlayListTrack({ route }: AlbumTracksProps) {
 
     const isLoading = playlistTrackQuery.isLoading || coverImageQuery.isLoading;
     const playlistTracks = playlistTrackQuery.data;
-    const {Play}=useMusicPlayer()
-
+    const playlistCoverImage=coverImageQuery.data
+    const {PlayPlaylist}=useMusicPlayer()
+    console.log(PlaylistID)
     const { mutate, isPending } = useDeleteTrackFromPlaylist();
     const filteredTracks = playlistTracks?.items?.filter((item: { track: SpotifyApi.TrackObjectFull }) =>
         item?.track?.name
@@ -92,7 +93,7 @@ function UserPlayListTrack({ route }: AlbumTracksProps) {
         overshootRight={false}
     >
         <TrackCard isDisplayMenu={false}
-                   onPlay={() => {Play(item?.track.uri) }}
+                   onPlay={() => {PlayPlaylist(`spotify:playlist:${PlaylistID}`,index) }}
                    onMenuCLick={() => { }}
                    albumImage={item?.track?.album?.images?.[0]?.url ?? ""}
                    songName={item?.track?.name ?? ""}
@@ -115,8 +116,10 @@ function UserPlayListTrack({ route }: AlbumTracksProps) {
             </TouchableOpacity>
 
 
+            {/*<Text>{JSON.stringify(playlistCoverImage?.[0]?.url)}</Text>*/}
+
             <SearchInput value={search} onChange={setSearch}  />
-            {playlistTracks?.items?.length > 0 ?
+
        <View style={{zIndex:-1,flex:1}}>
            <FlatList
                contentContainerStyle={{    gap: 10,paddingTop: 2,  paddingBottom:200,}}
@@ -135,7 +138,10 @@ function UserPlayListTrack({ route }: AlbumTracksProps) {
                }
                keyExtractor={(item) => item.track.id}
            />
-       </View> :<EmptyState/>}
+       </View>
+
+            {!isLoading && (playlistTracks?.items?.length <= 0 &&
+                <EmptyState/>)}
 
 
 

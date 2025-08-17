@@ -19,12 +19,6 @@ function ProfileMenu() {
     const handleSnapPress = () => {
         sheetRef.current?.snapToIndex(0);
     };
- const randomColorProfile=[ "#1E293B",
-     "#6366F1",
-     "#FCA5A5",
-     "#10B981",
-     "#FACC15"]
-const randomIndexColor=Math.floor(Math.random() * randomColorProfile.length)
 
     return (
         <>
@@ -62,7 +56,7 @@ const randomIndexColor=Math.floor(Math.random() * randomColorProfile.length)
                             height: 35,
                             width: 35,
 
-                            backgroundColor: randomColorProfile[randomIndexColor],
+                            backgroundColor: "#6366F1",
                             borderRadius: 100,
                             justifyContent:"center",
                             alignItems: "center",
@@ -99,8 +93,8 @@ const randomIndexColor=Math.floor(Math.random() * randomColorProfile.length)
                           :  <View  style={{
 
                                 flex:1,
-                                backgroundColor: randomColorProfile[randomIndexColor],
-                                borderRadius: 100,
+                                    backgroundColor: "#6366F1",
+                                 borderRadius: 100,
                                 justifyContent:"center",
                                 alignItems: "center",
                             }}>

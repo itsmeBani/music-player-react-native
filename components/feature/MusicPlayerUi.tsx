@@ -14,6 +14,8 @@ function MusicPlayerUi() {
     useEffect(() => {
         currentTrackData?.refetch()
     }, [playerState]);
+
+
     return (
 
         <BottomSheet containerStyle={{zIndex:-1}}

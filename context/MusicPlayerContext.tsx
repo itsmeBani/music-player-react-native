@@ -23,6 +23,7 @@ interface MusicPlayerContextType {
     Resume: () => void
     Pause: () => void
     AddToQueue: (uri:string | undefined) => void
+    PlayPlaylist: (PlaylistID:string,offset?:number) => void
 }
 
 const MusicPlayerContext = createContext<MusicPlayerContextType | undefined>(undefined);
@@ -59,6 +60,14 @@ export const MusicPlayerProvider = ({children}: { children: ReactNode }) => {
 
         });
 
+    }
+
+    const PlayPlaylist=(playlistID:string,offset?:number)=>{
+        player.PlayPlaylist.mutate({
+            contextUri: playlistID,
+            progress_ms: 0,
+            offset:offset
+        });
     }
 
     const Next =async () => {
@@ -101,7 +110,8 @@ export const MusicPlayerProvider = ({children}: { children: ReactNode }) => {
                 Previos,
                 Pause,
                 Resume,
-                AddToQueue
+                AddToQueue,
+                PlayPlaylist
 
 
         }}>

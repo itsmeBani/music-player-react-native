@@ -7,7 +7,11 @@ type PlaySpotifyTrackInput = {
     contextUri: string | undefined;
     progress_ms: number;
 };
-
+type PlaySpotifyPlaylistInput = {
+    contextUri: string | undefined;
+    progress_ms: number;
+    offset?:number
+};
 
 const getActiveSpotifyDevice = async (): Promise<string | null> => {
     try {
@@ -56,6 +60,40 @@ export const useSpotifyPlayer = ({getPlayerState}: { getPlayerState: () => Promi
         },
     });
 
+    const PlayPlaylist = useMutation<void, Error, PlaySpotifyPlaylistInput>({
+        mutationFn: async ({contextUri, progress_ms,offset=0}) => {
+
+            // if (!contextUri) return
+            const deviceId = await getActiveSpotifyDevice();
+            if (!deviceId) throw new Error('No active Spotify device found.');
+            await apiClient.put(
+                `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+                {
+                    context_uri: contextUri,
+                    offset:{
+                        position:offset
+                    },
+                    progress_ms:progress_ms
+                }
+            );
+        },
+        onMutate: async () => await queryClient.cancelQueries({queryKey: ["current-track"]}),
+
+        onSuccess: () => getPlayerState(),
+        onError: (err) => {
+            console.log('Error playing track:', err)
+
+            notify('spotify_info', {
+                params: {
+                    variant: "info",
+                    description: "Launch Spotify before using this feature"
+                },
+                config: {
+                    duration: 5000,
+                },
+            })
+        },
+    });
     const Pause = useMutation<void, Error>({
         mutationFn: async () => {
             const deviceId = await getActiveSpotifyDevice();
@@ -92,5 +130,5 @@ export const useSpotifyPlayer = ({getPlayerState}: { getPlayerState: () => Promi
         onError: (err) => console.error('Error going to previous:', err),
     });
 
-    return {Play, Pause, Next, Previous};
+    return {Play, Pause, Next, Previous,PlayPlaylist};
 };
