@@ -33,7 +33,7 @@ interface ClientToServerEvents {
     initiate: (payload: { accessToken: string }) => void;
 }
 
-export default function useRealtimePlayerState() {
+export default function useListenOnChangeTrack  () {
     const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null);
     const [playerState, setPlayerState] = useState<SpotifyPlayer | null>(null);
 
@@ -62,7 +62,7 @@ export default function useRealtimePlayerState() {
             if (!isMounted || !accessToken) return;
 
             // 3. Connect to socket
-            socketRef.current = io('http://192.168.8.33:3002/connect', {
+            socketRef.current = io('https://realtime-spotify-listener-dffehjarecfvauc3.canadacentral-01.azurewebsites.net/connect', {
                 transports: ['websocket'],
             });
 
@@ -82,7 +82,7 @@ export default function useRealtimePlayerState() {
 
             // 7. Listen for custom Spotify connect errors from server
             socketRef.current.on('spotify_connect_error', (err) => {
-                console.error('Spotify socket error received:', err);
+                // console.error('Spotify socket error received:', err);
             });
         };
 

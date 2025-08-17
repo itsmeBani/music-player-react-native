@@ -6,14 +6,25 @@ import {useQuery} from "@tanstack/react-query";
 import {fetchCurrentSpotifyUser} from "../query/fetchUser";
 import {BadgeAlert, VerifiedIcon} from "lucide-react-native";
 
-function Header() {
+function ProfileMenu() {
+
     const {Logout, currentUser,VerifyEmail} = useAuth();
+
     const {data} = useQuery(fetchCurrentSpotifyUser());
+
     const sheetRef = useRef<BottomSheet>(null);
+
     const snapPoints = useMemo(() => ["36%"], []);
+
     const handleSnapPress = () => {
         sheetRef.current?.snapToIndex(0);
     };
+ const randomColorProfile=[ "#1E293B",
+     "#6366F1",
+     "#FCA5A5",
+     "#10B981",
+     "#FACC15"]
+const randomIndexColor=Math.floor(Math.random() * randomColorProfile.length)
 
     return (
         <>
@@ -31,11 +42,13 @@ function Header() {
 
                 <View>
                     <Text style={{fontFamily: "PlusJakartaSans-Bold", color: "white"}}>
-                        Spotify
+                        Music Player
                     </Text>
                 </View>
 
                 <TouchableOpacity onPress={handleSnapPress}>
+
+                    {data?.data?.images[0]?.url ?
                     <Image
                         src={data?.data?.images[0]?.url}
                         style={{
@@ -45,7 +58,17 @@ function Header() {
                             borderRadius: 100,
                             alignItems: "center",
                         }}
-                    />
+                    /> : <View  style={{
+                            height: 35,
+                            width: 35,
+
+                            backgroundColor: randomColorProfile[randomIndexColor],
+                            borderRadius: 100,
+                            justifyContent:"center",
+                            alignItems: "center",
+                        }}>
+                            <Text style={{fontSize:17,lineHeight:20,color:"white",fontFamily:"PlusJakartaSans-Bold"}}>{currentUser?.userName.charAt(0)}</Text>
+                        </View>}
                 </TouchableOpacity>
             </View>
 
@@ -68,7 +91,22 @@ function Header() {
                 >
                     <View style={{flexDirection: "row", gap: 20}}>
                         <View style={style.avatarContainer}>
+
+                            {data?.data?.images[0]?.url ?
                             <Image src={data?.data?.images[0]?.url} style={{flex: 1}}/>
+
+
+                          :  <View  style={{
+
+                                flex:1,
+                                backgroundColor: randomColorProfile[randomIndexColor],
+                                borderRadius: 100,
+                                justifyContent:"center",
+                                alignItems: "center",
+                            }}>
+                                <Text style={{fontSize:50,lineHeight:50,color:"white",fontFamily:"PlusJakartaSans-Bold"}}>{currentUser?.userName.charAt(0)}</Text>
+                            </View>
+                            }
                         </View>
                         <View style={{justifyContent: "flex-start", alignItems: "flex-start"}}>
                             <Text style={style.name}>{currentUser?.userName}</Text>
@@ -99,7 +137,7 @@ function Header() {
     );
 }
 
-export default Header;
+export default ProfileMenu;
 
 const style = StyleSheet.create({
     avatarContainer: {

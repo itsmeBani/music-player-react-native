@@ -3,27 +3,43 @@
     "name": "music-player",
     "slug": "music-player",
     "version": "1.0.0",
+    "scheme": "com.jiovani.musicplayer",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/LOGOAPP.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/LOGOAPP.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#191919"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/LOGOICON.png",
+        "backgroundColor": "#191919"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": false,
+      "package": "com.jiovani.musicplayer"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "androidNavigationBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#191919"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "65cf6bb2-5684-490d-a2b8-48e38f4a7e31"
+      }
+    },
+    "plugins": [
+      "expo-font",
+      "expo-web-browser"
+
+    ]
   }
 }

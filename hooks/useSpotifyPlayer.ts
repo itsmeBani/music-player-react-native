@@ -1,12 +1,14 @@
 import {QueryClient, useMutation} from '@tanstack/react-query';
-import apiClient from './AxiosClientConfig';
+import apiClient from '../query/AxiosClientConfig';
+import { useNotifications } from '../app/toast-config/toast';
+
 
 type PlaySpotifyTrackInput = {
     contextUri: string | undefined;
     progress_ms: number;
 };
 
-// Helper: Get active device or fallback
+
 const getActiveSpotifyDevice = async (): Promise<string | null> => {
     try {
         const response = await apiClient.get('https://api.spotify.com/v1/me/player/devices');
@@ -19,11 +21,11 @@ const getActiveSpotifyDevice = async (): Promise<string | null> => {
     }
 };
 
-export const useSpotifyPlayer = ({getPlayerState} :{getPlayerState:()=>Promise<void>}) => {
-const queryClient=new QueryClient()
-
+export const useSpotifyPlayer = ({getPlayerState}: { getPlayerState: () => Promise<void> }) => {
+    const queryClient = new QueryClient()
+    const {notify} = useNotifications()
     const Play = useMutation<void, Error, PlaySpotifyTrackInput>({
-        mutationFn: async ({ contextUri, progress_ms }) => {
+        mutationFn: async ({contextUri, progress_ms}) => {
 
             if (!contextUri) return
             const deviceId = await getActiveSpotifyDevice();
@@ -36,10 +38,22 @@ const queryClient=new QueryClient()
                 }
             );
         },
-        onMutate:async ()=>   await queryClient.cancelQueries({ queryKey: ["current-track"] }),
+        onMutate: async () => await queryClient.cancelQueries({queryKey: ["current-track"]}),
 
         onSuccess: () => getPlayerState(),
-        onError: (err) => console.error('Error playing track:', err),
+        onError: (err) => {
+            console.log('Error playing track:', err)
+
+            notify('spotify_info', {
+                params: {
+                    variant: "info",
+                    description: "Launch Spotify before using this feature"
+                },
+                config: {
+                    duration: 5000,
+                },
+            })
+        },
     });
 
     const Pause = useMutation<void, Error>({
@@ -78,5 +92,5 @@ const queryClient=new QueryClient()
         onError: (err) => console.error('Error going to previous:', err),
     });
 
-    return { Play, Pause, Next, Previous };
+    return {Play, Pause, Next, Previous};
 };

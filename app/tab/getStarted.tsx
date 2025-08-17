@@ -1,21 +1,21 @@
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import React from "react";
 import {AudioLines} from "lucide-react-native";
 import {useAuth} from "../../context/AuthContext";
 
-
-function Login() {
+function GetStarted() {
     const {promptAsync}=useAuth()
     return (
-        <SafeAreaView style={{backgroundColor:"#191919",flex:1,padding:16}}>
+        <View style={{backgroundColor:"#191919",flex:1}}>
+            <View style={{zIndex:1,position:"absolute",backgroundColor:"rgba(0,0,0,0.56)",width:"100%",height:"100%"}}/>
           <View style={{flex:1,display:"flex"}}>
-              <View style={{flex:1}}>
-
-
+              <View style={{flex:1,overflow:"visible",padding:30,alignItems:"center",justifyContent:"center"}}>
+                  <Image style={{position:"absolute",top:50,height:"100%",width:"130%",objectFit:"contain"}} source={require('../../assets/headphone-image.png')} />
               </View>
-              <AudioLines size={32} color={"white"} strokeWidth={1.75} />
-              <View style={styles.contentWrapper}>
+
+              <SafeAreaView style={styles.contentWrapper}>
+                  <AudioLines style={{marginBottom:10}} size={32} color={"white"} strokeWidth={1.75} />
                   <Text style={styles.title}>
                       Step Into a World Where Every Beat Tells Your Story
                   </Text>
@@ -25,30 +25,30 @@ function Login() {
                   <TouchableOpacity onPress={()=>promptAsync()} activeOpacity={0.8} style={styles.button}>
                       <Text style={styles.buttonText}>Start Listening</Text>
                   </TouchableOpacity>
-              </View>
+              </SafeAreaView>
 
 
           </View>
-        </SafeAreaView>
+        </View>
     );
 }
 
-export default Login;
+export default GetStarted;
 
 
 const styles =StyleSheet.create({
     logoContainer:{
-
     },
     contentWrapper: {
-        paddingTop:13,
+        paddingHorizontal:18,
+        zIndex:1,
         paddingBottom:20
     },
     title: {
         fontSize: 29,
         textAlign:"auto",
   paddingBottom:10,
-        color: '#1DB954',
+        color: '#0e6',
         lineHeight: 31,
         fontFamily:"PlusJakartaSans-Bold"
     },

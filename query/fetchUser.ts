@@ -1,25 +1,26 @@
-
-
 import {queryOptions} from "@tanstack/react-query";
-import axios from "axios";
-const API_BASE_URL = 'https://api.spotify.com/v1';
 
-type AccessTokenType=string | null | undefined
-export const fetchCurrentSpotifyUser= (accessToken: AccessTokenType)=>{
+import apiClient, {API_BASE_URL} from "./AxiosClientConfig";
+
+export const fetchCurrentSpotifyUser= ()=>{
   return queryOptions({
       queryKey:["user"],
-      queryFn:()=>getCurrentSpotifyUser(accessToken)
+      queryFn:()=>getCurrentSpotifyUser(),
+
   })
 }
 
 
-const getCurrentSpotifyUser=async (accessToken:AccessTokenType) => {
-    return axios.get(
+const getCurrentSpotifyUser=async () => {
+    return apiClient.get(
         `${API_BASE_URL}/me`, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
             method: 'GET',
         }
     )
 };
+
+
+
+
+
+
