@@ -1,3 +1,7 @@
+> ⚠️ **Important Note:**  
+> This project requires a **Spotify Premium account** and the **Spotify app must be open** for playback to work.  
+> It is intended **only for consuming the Spotify Web API** and not as a standalone music player.
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/60f8df0b-9a22-48b3-a24a-498ef8367d8a" width="200"/>
   <img src="https://github.com/user-attachments/assets/41fc8cf8-34cc-4b72-b0b7-983af72731f8" width="200"/>
